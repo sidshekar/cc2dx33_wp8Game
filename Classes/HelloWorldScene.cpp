@@ -81,15 +81,13 @@ void HelloWorld::update(float dt)
 		if (hero->getPositionY() > maxY || hero->getPositionY() < minY)
 			thrust.y = 0;
 		
-		hero->setPosition(ccp(hero->getPosition().x, newY));	
-
+		hero->setPosition(ccp(hero->getPosition().x, newY));
 		
 		if (thrust.y > 0)
 			mPlayerState = kPlayerStateBoost;
 		else
 			mPlayerState = kPLayerStateIdle;
 
-		
 		this->AnimationStates();
 
 

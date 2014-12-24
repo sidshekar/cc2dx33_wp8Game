@@ -24,14 +24,14 @@ bool ScrollingBg::initScrollingBg(string _name, float _speed, float _yPos)
     
     gameBg1 = Sprite::create(_name.c_str()); 
 	gameBg1->setPosition(Vec2(winSize.width * 0.5f, _yPos));
-    gameBg1->setAnchorPoint(ccp(0.5,0.0));
-    gameBg1->setScaleX(1.01);
+    gameBg1->setAnchorPoint(Vec2(0.5,0.0));
+    gameBg1->setScaleX(1.0);
     addChild(gameBg1);
     
     gameBg2 = Sprite::create(_name.c_str());
 	gameBg2->setPosition(Vec2(winSize.width * 0.5f + winSize.width , _yPos));
-    gameBg2->setAnchorPoint(ccp(0.5,0.0));
-    gameBg2->setScaleX(1.01);
+    gameBg2->setAnchorPoint(Vec2(0.5,0.0));
+    gameBg2->setScaleX(1.0);
     addChild(gameBg2);
     
     return true;

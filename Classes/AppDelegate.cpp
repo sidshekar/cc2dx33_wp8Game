@@ -31,7 +31,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     if(!glview) {
         glview = GLViewImpl::create("Learning Cocos2d-x Game Developement v3.3");
 
-		glview->setFrameSize(800,480);//change window resolution
+		//glview->setFrameSize(800,480);//change window resolution
         
 		director->setOpenGLView(glview);		
     }

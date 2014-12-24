@@ -18,6 +18,14 @@
     </ApplicationDefinition>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\Classes\AppDelegate.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\Classes\HelloWorldScene.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\Classes\HUDLayer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\Classes\MainMenuScene.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\Classes\OptionsMenuScene.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\Classes\ParticleLayer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\Classes\ParticleSpin.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\Classes\Projectile.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\Classes\ScrollingBg.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\Classes\ScrollingBgLayer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)App.xaml.cpp">
       <DependentUpon>$(MSBuildThisFileDirectory)App.xaml</DependentUpon>
     </ClCompile>
@@ -29,6 +37,14 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\Classes\AppDelegate.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\Classes\AppMacros.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\Classes\HelloWorldScene.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\Classes\HUDLayer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\Classes\MainMenuScene.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\Classes\OptionsMenuScene.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\Classes\ParticleLayer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\Classes\ParticleSpin.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\Classes\Projectile.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\Classes\ScrollingBg.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\Classes\ScrollingBgLayer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)App.xaml.h">
       <DependentUpon>$(MSBuildThisFileDirectory)App.xaml</DependentUpon>
     </ClInclude>
