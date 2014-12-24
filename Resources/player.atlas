@@ -1,0 +1,47 @@
+
+player.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bookGame_player_Lleg
+  rotate: false
+  xy: 77, 57
+  size: 14, 21
+  orig: 14, 21
+  offset: 0, 0
+  index: -1
+bookGame_player_RLeg
+  rotate: true
+  xy: 28, 4
+  size: 13, 21
+  orig: 15, 21
+  offset: 1, 0
+  index: -1
+bookGame_player_bazooka
+  rotate: false
+  xy: 2, 19
+  size: 61, 21
+  orig: 61, 21
+  offset: 0, 0
+  index: -1
+bookGame_player_body
+  rotate: false
+  xy: 77, 80
+  size: 41, 35
+  orig: 41, 35
+  offset: 0, 0
+  index: -1
+bookGame_player_hand
+  rotate: false
+  xy: 2, 2
+  size: 24, 15
+  orig: 24, 15
+  offset: 0, 0
+  index: -1
+bookGame_player_head
+  rotate: false
+  xy: 2, 42
+  size: 73, 73
+  orig: 73, 73
+  offset: 0, 0
+  index: -1
