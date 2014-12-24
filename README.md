@@ -12,3 +12,5 @@ I will also write a small blog on the changes I have to make it work, but honest
 In the mean time go through the code and enjoy.
 
 ![alt tag](https://raw.githubusercontent.com/sidshekar/cc2dx33_wp8Game/fadc9f5cd7b79d39087c0c6983cb86e64d67b88d/Resources/Animations/gameplay.gif)
+
+![alt tag](https://raw.githubusercontent.com/sidshekar/cc2dx33_wp8Game/fadc9f5cd7b79d39087c0c6983cb86e64d67b88d/Resources/Animations/mainMenu.gif)
