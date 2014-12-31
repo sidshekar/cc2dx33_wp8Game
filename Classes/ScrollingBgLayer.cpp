@@ -1,10 +1,11 @@
 
 #include "ScrollingBgLayer.h"
 
+USING_NS_CC;
 ScrollingBgLayer::ScrollingBgLayer(float speed)
 {
 
-	Size visibleSize = CCDirector::getInstance()->getVisibleSize();  
+	Size visibleSize = Director::getInstance()->getVisibleSize();  
 
     Sprite* bg = Sprite::create("bookGame_Bg.png");
 	bg->setPosition(Vec2(visibleSize.width* 0.5,visibleSize.height * 0.5));

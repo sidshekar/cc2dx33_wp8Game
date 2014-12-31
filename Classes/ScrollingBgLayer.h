@@ -5,21 +5,16 @@
 #include <iostream>
 #include "ScrollingBg.h"
 
-class ScrollingBgLayer: public Layer
+class ScrollingBgLayer: public cocos2d::Layer
 {
 public:
     ScrollingBgLayer(float speed);
-    ~ScrollingBgLayer();
-    
+    ~ScrollingBgLayer();    
     ScrollingBg* hills;
     ScrollingBg* treesNbush;
 	ScrollingBg* ground;
-	ScrollingBg* grass;
-    
+	ScrollingBg* grass;    
     void update();
-    
-
-
 };
 
 #endif /* defined(__endlessFlyer__ScrollingBgLayer__) */

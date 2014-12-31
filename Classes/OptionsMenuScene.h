@@ -6,7 +6,7 @@
 
 using namespace cocos2d;
 
-class OptionsMenu : public cocos2d::CCLayer
+class OptionsMenu : public cocos2d::Layer
 {
 public:
     // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
@@ -16,15 +16,11 @@ public:
 	ScrollingBgLayer* scrollingBgLayer;
 	MenuItemImage* soundOnItem;
 	MenuItemImage* soundOffItem;
-
 	static cocos2d::Scene* scene();
 	void update(float dt);
-
-	void reset(CCObject* pSender);
-	void mainMenu(CCObject* pSender);
-
-	void SoundOnOff(CCObject* sender);
-
+	void reset(Object* pSender);
+	void mainMenu(Object* pSender);
+	void SoundOnOff(Object* sender);
 	CREATE_FUNC(OptionsMenu);
 };
 

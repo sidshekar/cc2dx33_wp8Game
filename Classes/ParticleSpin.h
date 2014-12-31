@@ -5,24 +5,20 @@
 class ProjectileObject;
 
 #include <iostream>
-
 #include "cocos2d.h"
-using namespace cocos2d;
 
-
-class ParticleSpin: public CCSprite
+class ParticleSpin: public cocos2d::Sprite
 {
     ParticleSpin();
     ~ParticleSpin();
     
-	CCPoint speed;
-	CCPoint gravity;
+	cocos2d::Vec2 speed;
+	cocos2d::Vec2 gravity;
     float spinCounter;
     
 public:
 	bool init();
-    static ParticleSpin* create(Vec2 _cp, char *fileName);
-  
+    static ParticleSpin* create(cocos2d::Vec2 _cp, char *fileName);  
     void update(float dt);
 };
 

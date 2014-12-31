@@ -7,13 +7,12 @@
 
 #include "cocos2d.h"
 #include "ParticleSpin.h"
-using namespace cocos2d;
 
-class ParticleLayer: public CCLayer
+class ParticleLayer: public cocos2d::Layer
 {
 
 public:
-	ParticleLayer(Vec2 p);
+	ParticleLayer(cocos2d::Vec2 p);
     ~ParticleLayer();  
 
 	ParticleSpin* enemyDie;

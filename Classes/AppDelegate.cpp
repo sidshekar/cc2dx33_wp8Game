@@ -4,6 +4,7 @@
 
 
 USING_NS_CC;
+using namespace CocosDenshion;
 
 AppDelegate::AppDelegate() {
 
@@ -27,24 +28,24 @@ void AppDelegate::initGLContextAttrs()
 bool AppDelegate::applicationDidFinishLaunching() {
     // initialize director
     auto director = Director::getInstance();
+	auto cocosDenshion = SimpleAudioEngine::getInstance();
     auto glview = director->getOpenGLView();
     if(!glview) {
         glview = GLViewImpl::create("Learning Cocos2d-x Game Developement v3.3");
 
-		//glview->setFrameSize(800,480);//change window resolution
+		glview->setFrameSize(800,480);//change window resolution
         
 		director->setOpenGLView(glview);		
     }
 
-	CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadBackgroundMusic("bgMusic.wav");
-	CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("bgMusic.wav",true);
-
-	CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadEffect("enemyKill.wav");
-	CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadEffect("fireRocket.wav");
-	CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadEffect("gunshot.wav");
-	CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadEffect("playerKill.wav");
-	CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadEffect("pop.wav");
-	CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadEffect("rocketExplode.wav");
+	cocosDenshion -> preloadBackgroundMusic("bgMusic.wav");
+	cocosDenshion -> playBackgroundMusic("bgMusic.wav",true);
+	cocosDenshion -> preloadEffect("enemyKill.wav");
+	cocosDenshion -> preloadEffect("fireRocket.wav");
+	cocosDenshion -> preloadEffect("gunshot.wav");
+	cocosDenshion -> preloadEffect("playerKill.wav");
+	cocosDenshion -> preloadEffect("pop.wav");
+	cocosDenshion -> preloadEffect("rocketExplode.wav");
 
     // turn on display FPS
     director->setDisplayStats(true);
@@ -66,7 +67,7 @@ void AppDelegate::applicationDidEnterBackground() {
     Director::getInstance()->stopAnimation();
 
     // if you use SimpleAudioEngine, it must be pause
-    // SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
+     SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
 }
 
 // this function will be called when the app is active again
@@ -74,5 +75,5 @@ void AppDelegate::applicationWillEnterForeground() {
     Director::getInstance()->startAnimation();
 
     // if you use SimpleAudioEngine, it must resume here
-    // SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
+    SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
 }

@@ -4,8 +4,10 @@
 #include <spine/spine-cocos2dx.h>
 #include "SimpleAudioEngine.h"
 
-CCScene* MainMenu::scene(){
-    auto scene = CCScene::create();
+using namespace CocosDenshion;
+
+Scene* MainMenu::scene(){
+    auto scene = Scene::create();
 	auto layer = MainMenu::create();
     scene->addChild(layer);
     return scene;
@@ -15,35 +17,28 @@ CCScene* MainMenu::scene(){
 bool MainMenu::init(){
     
 	//check if background music needs to be played
-	bool isPaused = CCUserDefault::sharedUserDefault()->getBoolForKey("tinyBazooka_kSoundPausedKey");
+	bool isPaused = UserDefault::getInstance()->getBoolForKey("tinyBazooka_kSoundPausedKey");
 	
 	if(isPaused == true)	{
-		CocosDenshion::SimpleAudioEngine::sharedEngine()->pauseBackgroundMusic();
+		SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
 	}else{
-		CocosDenshion::SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();	
+		SimpleAudioEngine::getInstance()->resumeBackgroundMusic();	
 	}
 	
-	Size visibleSize = CCDirector::getInstance()->getVisibleSize();
-    Vec2 origin = CCDirector::getInstance()->getVisibleOrigin();
-
-
-	CCLOG("Hello CCLOG");
-
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+    Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	scrollingBgLayer = new ScrollingBgLayer(3.0);
 	this->addChild(scrollingBgLayer);
-
-	auto nameLabel = LabelBMFont::create("Ms.tinyBazooka","PixelFont.fnt");
+	auto nameLabel = Label::createWithBMFont("PixelFont.fnt", "Ms.tinyBazooka");
 	nameLabel->setPosition(Vec2(visibleSize.width/2, visibleSize.height * 0.8));
 	this->addChild(nameLabel);
 
-
 	//actions
-
 	
 	MoveBy* moveUp =MoveBy::create( 1, Vec2(0, 20));
     EaseSineInOut *easeUp = EaseSineInOut::create(moveUp);	
 	auto easeDown = easeUp->reverse();
-	auto sequence = (ActionInterval*)Sequence::create(easeUp,easeDown, NULL);
+	auto sequence = dynamic_cast<ActionInterval*>(Sequence::create(easeUp,easeDown, nullptr));
 	nameLabel->runAction(RepeatForever::create(sequence));	
 
 	//spine instead of extension namespace
@@ -66,30 +61,26 @@ bool MainMenu::init(){
 
 
     // create menu, it's an autorelease object
-	auto pMenu = Menu::create(pOptionsItem,pPlayItem, NULL);
+	auto pMenu = Menu::create(pOptionsItem,pPlayItem, nullptr);
 	pMenu->setPosition(Vec2(0,0));// Or use Vec2::Zero
     this->addChild(pMenu, 10);	
 	
-	auto newHighScoreLabel = LabelBMFont::create("CURRENT HIGH SCORE", "PixelFont.fnt");
+	auto newHighScoreLabel = Label::createWithBMFont("PixelFont.fnt", "CURRENT HIGH SCORE");
     newHighScoreLabel->setPosition(Vec2(visibleSize.width * 0.5, visibleSize.height * 0.15));
     this->addChild(newHighScoreLabel, 10);
     newHighScoreLabel->setScale(0.5);        
 
-	auto highScoreLabel = LabelBMFont::create("0", "PixelFont.fnt");
+	auto highScoreLabel = Label::createWithBMFont("PixelFont.fnt", "0");
     highScoreLabel->setPosition(Vec2(visibleSize.width * 0.5, visibleSize.height * 0.1));
     this->addChild(highScoreLabel, 10);
     highScoreLabel->setScale(0.5);     
 	
-	int highScore = CCUserDefault::sharedUserDefault()->getIntegerForKey("bazookaGameHighScore");
+	int highScore = UserDefault::getInstance()->getIntegerForKey("bazookaGameHighScore");
     char scoreTxt[100];
     sprintf(scoreTxt, "%d", highScore);
     highScoreLabel->setString(scoreTxt);
-	
-
 	this->scheduleUpdate();
-
 	return true;
-
 }
 
 
@@ -101,19 +92,17 @@ void MainMenu::update(float dt)
 
 void MainMenu:: playGame(Ref* pSender)
 {
-	CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("pop.wav");
-	
-	CCScene *mScene = HelloWorld::scene();
-    CCDirector::sharedDirector()->replaceScene(mScene);
+	SimpleAudioEngine::getInstance()->playEffect("pop.wav");	
+	Scene *mScene = HelloWorld::scene();
+    Director::getInstance()->replaceScene(mScene);
 }
 
 
 void MainMenu::optionsScene(Ref* pSender)
 {
-	CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("pop.wav");
-	
+	SimpleAudioEngine::getInstance()->playEffect("pop.wav");	
 	Scene *mScene = OptionsMenu::scene();
-    CCDirector::sharedDirector()->replaceScene(mScene);
+    Director::getInstance()->replaceScene(mScene);
 }
 
   

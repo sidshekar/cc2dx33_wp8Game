@@ -1,5 +1,6 @@
 
 #include "ParticleLayer.h"
+USING_NS_CC;
 
 ParticleLayer::ParticleLayer(Vec2 p)
 {
