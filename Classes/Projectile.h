@@ -3,18 +3,14 @@
 
 #pragma once
 #include "cocos2d.h"
-using namespace cocos2d;
-using namespace std;
 
-class Projectile : public Sprite
+class Projectile : public cocos2d::Sprite
 {
 public:
 
-	Vec2 _speed;
-
-	static Projectile* createProjectile(string filename, Vec2 p, Vec2 speed, string name);
-	bool initProjectile(string filename, Vec2 p, Vec2  speed, string name);
-	
+	cocos2d::Vec2 _speed;
+	static Projectile* createProjectile(std::string filename, cocos2d::Vec2 p, cocos2d::Vec2 speed, std::string name);
+	bool initProjectile(std::string filename, cocos2d::Vec2 p, cocos2d::Vec2  speed, std::string name);	
 	void shoot(float dt);
 	void update();	
 };

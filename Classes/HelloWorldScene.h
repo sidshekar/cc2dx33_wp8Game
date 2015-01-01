@@ -2,11 +2,6 @@
 #define __wp8Game__HELLOWORLD_SCENE_H__
 
 #include "cocos2d.h"
-using namespace cocos2d;
-
-USING_NS_CC;
-
-
 #include "ParticleLayer.h"
 #include "Projectile.h"
 #include "HUDLayer.h"
@@ -27,58 +22,45 @@ typedef enum PlayerState
 	kPlayerStateBoost
 };
 
-class HelloWorld : public cocos2d::CCLayer
+class HelloWorld : public cocos2d::Layer
 {
 public:
+	static cocos2d::Scene* scene();
+	CREATE_FUNC(HelloWorld);
+    virtual bool init();      
+	void GameOver();
+	void gamePaused();
 
 	//variables
 	int score;
 	bool gameOver;
-
-	Size visibleSize;
-	Sprite* hero;
-
+	cocos2d::Size visibleSize;
+	cocos2d::Sprite* hero;
 	vector<Projectile*> rockets;
 	vector<Projectile*> enemies;
 	vector<Projectile*> bullets;
-
-	Vec2 gravity, thrust;
-
+	cocos2d::Vec2 gravity, thrust;
 	ActionState mActionState; 
-	PlayerState mPlayerState;
-	
-	CCAction* mIdleAction, *mBoostAction;
-
+	PlayerState mPlayerState;	
+	cocos2d::Action* mIdleAction, *mBoostAction;
 	HUDLayer* hudLayer;
 	ScrollingBgLayer* scrollingBgLayer;
-
-	CCParticleSystemQuad* flameParticle, *smokeParticle, *dustParticle;
+	cocos2d::ParticleSystemQuad* flameParticle, *smokeParticle, *dustParticle;
 
 	//functions
 	virtual void update(float dt);
 	void spawnEnemy(float dt);
 	void fireRocket();
-	void shoot(Vec2 position);
-	void GameOver();
+	void shoot(cocos2d::Vec2 position);
 	void checkCollision();
-	void gamePaused();
 	void gameResumed();
-	void mainMenuScene(CCObject* pSender);
-
+	void mainMenuScene(cocos2d::Object* pSender);
 	void initHeroAnimation();
 	void idleAnim();
 	void boostAnim();
 	void AnimationStates();
-
 	void updateGameObjects();
-
-
-	//virtual void ccTouchesBegan(CCSet* pTouches, CCEvent* event);
-	virtual bool onTouchesBegan(Touch* touch, Event* event);
-
-    virtual bool init();  
-    static cocos2d::CCScene* scene();
-    CREATE_FUNC(HelloWorld);
+	bool onTouchesBegan(cocos2d::Touch* touch, cocos2d::Event* event);    
 };
 
 #endif // __HELLOWORLD_SCENE_H__

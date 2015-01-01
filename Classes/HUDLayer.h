@@ -3,27 +3,21 @@
 
 #pragma once
 #include "cocos2d.h"
-using namespace cocos2d;
 
 class HelloWorldScene;
 
-class HUDLayer : public CCLayer
+class HUDLayer : public cocos2d::Layer
 {
 public:
 	HUDLayer(void);
 	~HUDLayer(void);
-
-	CCMenu* pauseMenu;
-	CCMenu* resumeMenu;
-
-	CCSize visibleSize;
-	CCLabelBMFont* scoreLabel;
-
 	void updateScore(int score);
-
-	void pauseGame(CCObject* pSender);
-	void resumeGame(CCObject* pSender);
-	
+	cocos2d::Menu* pauseMenu;
+	cocos2d::Menu* resumeMenu;
+	cocos2d::Size visibleSize;
+	cocos2d::Label* scoreLabel;
+	void pauseGame(cocos2d::Object* pSender);
+	void resumeGame(cocos2d::Object* pSender);	
 };
 	
 

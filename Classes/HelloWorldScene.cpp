@@ -2,10 +2,11 @@
 #include "MainMenuScene.h"
 #include "SimpleAudioEngine.h"
 
-
-CCScene* HelloWorld::scene()
+using namespace CocosDenshion;
+USING_NS_CC;
+Scene* HelloWorld::scene()
 {
-    CCScene *scene = CCScene::create();
+    Scene *scene = Scene::create();
     HelloWorld *layer = HelloWorld::create();
     scene->addChild(layer);
     return scene;
@@ -16,7 +17,7 @@ bool HelloWorld::init()
 {
     //////////////////////////////
     // 1. super init first
-    if ( !CCLayer::init() )
+    if ( !Layer::init() )
     {
         return false;
     }    
@@ -26,8 +27,8 @@ bool HelloWorld::init()
 	gameOver = false;
 	score = 0;
 
-	visibleSize = CCDirector::sharedDirector()->getVisibleSize();    
-	Vec2 origin = CCDirector::sharedDirector()->getVisibleOrigin();
+	visibleSize = Director::getInstance()->getVisibleSize();    
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	scrollingBgLayer = new ScrollingBgLayer(3.0);
 	this->addChild(scrollingBgLayer);
@@ -37,8 +38,8 @@ bool HelloWorld::init()
 	addChild(hero, 5);
 	initHeroAnimation();
 
-	flameParticle = CCParticleSystemQuad::create("jetBoost.plist");
-	flameParticle->setPosition(ccpAdd(hero->getPosition(), ccp(-hero->getContentSize().width * 0.25, 0)));
+	flameParticle = ParticleSystemQuad::create("jetBoost.plist");
+	flameParticle->setPosition(Vec2(hero->getPosition(), Vec2(-hero->getContentSize().width * 0.25, 0)));
 	addChild(flameParticle);
 	
 	hudLayer = new HUDLayer();
@@ -65,7 +66,7 @@ void HelloWorld::update(float dt)
 		updateGameObjects();
 		checkCollision();
 
-		flameParticle->setPosition(ccpAdd(hero->getPosition(), ccp(-hero->getContentSize().width * 0.25, 0)));
+		flameParticle->setPosition(hero->getPosition() + Vec2(-hero->getContentSize().width * 0.25, 0));
 
 
 		thrust.y += gravity.y;
@@ -81,7 +82,7 @@ void HelloWorld::update(float dt)
 		if (hero->getPositionY() > maxY || hero->getPositionY() < minY)
 			thrust.y = 0;
 		
-		hero->setPosition(ccp(hero->getPosition().x, newY));
+		hero->setPosition(Vec2(hero->getPosition().x, newY));
 		
 		if (thrust.y > 0)
 			mPlayerState = kPlayerStateBoost;
@@ -89,39 +90,6 @@ void HelloWorld::update(float dt)
 			mPlayerState = kPLayerStateIdle;
 
 		this->AnimationStates();
-
-
-		/*
-		if(jump)
-		{
-			jumpTimer = 10;
-			jump = false;
-
-		}
-
-		if(jumpTimer>0)
-		{
-			CCLog("boost");
-
-			mPlayerState = kPlayerStateBoost;
-			jumpTimer--;
-			CCPoint p = hero->getPosition();
-			CCPoint mP = ccpAdd(p,ccp(0,7));
-			hero->setPosition(mP);
-		}
-		else
-		{
-			CCLog("idle");
-			
-			mPlayerState = kPLayerStateIdle;
-			jumpTimer = 0;
-			CCPoint p = hero->getPosition();
-			CCPoint pM = ccpAdd(p,gravity);
-			hero->setPosition(pM);
-		}
-
-		*/
-
 	}
 	else
 	{
@@ -135,7 +103,7 @@ void HelloWorld::updateGameObjects(){
 
 	for (int i = 0; i<rockets.size(); i++)
 	{
-		Projectile* p = (Projectile*)rockets[i];
+		Projectile* p = dynamic_cast<Projectile*>(rockets[i]);
 		p->update();
 
 		if (p->getPositionX() >= visibleSize.width){
@@ -147,7 +115,7 @@ void HelloWorld::updateGameObjects(){
 	//enemies
 	for (int i = 0; i <enemies.size(); i++)
 	{
-		Projectile* e = (Projectile*)enemies[i];
+		Projectile* e = dynamic_cast<Projectile*>(enemies[i]);
 		e->update();
 
 		if (e->getPositionX() + e->getContentSize().width / 2 < 0)
@@ -160,7 +128,7 @@ void HelloWorld::updateGameObjects(){
 
 	for (int i = 0; i<bullets.size(); i++)
 	{
-		Projectile* p = (Projectile*)bullets[i];
+		Projectile* p = dynamic_cast<Projectile*>(bullets[i]);
 		p->update();
 
 		if (p->getPositionX() <= 0)
@@ -178,43 +146,25 @@ void HelloWorld::checkCollision(){
 
 	for (int i = 0; i<rockets.size(); i++)
 	{
-		Projectile* rocket = (Projectile*)rockets[i];
+		Projectile* rocket = dynamic_cast<Projectile*>(rockets[i]);
 
 		for (int j = 0; j< enemies.size(); j++)
 		{
-			Projectile* enemy = (Projectile*)enemies[j];
+			Projectile* enemy = dynamic_cast<Projectile*>(enemies[j]);
 
-			//CCLog("player rocket and enemy");
-			
+		
 			if (rocket->boundingBox().intersectsRect(enemy->boundingBox()))
 			{
 				score++;
-
 				hudLayer->updateScore(score);
-
-				CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("enemyKill.wav");
-				CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("rocketExplode.wav");
-
-				ParticleLayer* pLayer = new ParticleLayer(enemy->getPosition());
+				SimpleAudioEngine::getInstance()->playEffect("enemyKill.wav");
+				SimpleAudioEngine::getInstance()->playEffect("rocketExplode.wav");
+				auto pLayer = new ParticleLayer(enemy->getPosition());
 				this->addChild(pLayer);
-
-				//smokeParticle = CCParticleSystemQuad::create("smoke.plist");
-				//smokeParticle->setPosition(enemy->getPosition());
-				//this->addChild(smokeParticle, 15);   
-				//smokeParticle->setAutoRemoveOnFinish(true);
-
-				//dustParticle = CCParticleSystemQuad::create("dusts.plist");
-				//dustParticle->setPosition(enemy->getPosition());
-				//this->addChild(dustParticle, 15);   
-				//dustParticle->setAutoRemoveOnFinish(true);
-
-
 				this->removeChild(rocket);
 				this->removeChild(enemy);
-
 				rockets.erase(rockets.begin() + i);
 				enemies.erase(enemies.begin() + j);
-
 				return;
 			}
 		}
@@ -227,17 +177,13 @@ void HelloWorld::checkCollision(){
 		{
 			Projectile* b = (Projectile*)bullets[i];
 
-			//CCLog("enemy bullet and player");
-			
+		
 			if (b->boundingBox().intersectsRect(hero->boundingBox()))
 			{
-				CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("playerKill.wav");
-
+				SimpleAudioEngine::getInstance()->playEffect("playerKill.wav");
 				this->removeChild(b);
 				bullets.erase(bullets.begin() + i);
-				
 				GameOver();
-
 				return;
 			}
 		}
@@ -251,51 +197,41 @@ void HelloWorld::GameOver()
 {
 
 	gameOver = true;
-
-	
-	//CCLog("Game Over!!!!");
-
-		this->unscheduleAllSelectors();
-		
-		for (int i = 0; i< enemies.size(); i++){
-			Projectile* en = (Projectile*)enemies[i];
-			en->unscheduleAllSelectors();
-		}
+	this->unscheduleAllSelectors();
+	for (int i = 0; i< enemies.size(); i++)
+	{
+		Projectile* en = dynamic_cast<Projectile*>(enemies[i]);
+		en->unscheduleAllSelectors();
+	}
 		
 
-	CCMenuItemImage*mainmenuItem = CCMenuItemImage::create("_bookgame_UI_mainmenu.png",
+	MenuItemImage* mainmenuItem = MenuItemImage::create("_bookgame_UI_mainmenu.png",
 														 "_bookgame_UI_mainmenu.png", this,
 														 menu_selector(HelloWorld::mainMenuScene));
     
-	mainmenuItem->setPosition(ccp(visibleSize.width/2,
-								visibleSize.height * 0.2));
+	mainmenuItem->setPosition(Vec2(visibleSize.width/2, visibleSize.height * 0.2));
 	
 	
-	CCMenu *mainMenu = CCMenu::create(mainmenuItem, NULL);
+	Menu *mainMenu = Menu::create(mainmenuItem, nullptr);
 	mainMenu->setPosition(Vec2::ZERO);
 	this->addChild(mainMenu);
 
-	CCLabelBMFont* gameOverLabel = CCLabelBMFont::create("GAMEOVER", "PixelFont.fnt");
-	gameOverLabel->setPosition(ccp(visibleSize.width * 0.5, visibleSize.height * 0.6));
+	auto gameOverLabel = Label::createWithBMFont("PixelFont.fnt", "GAMEOVER");
+	gameOverLabel->setPosition(Vec2(visibleSize.width * 0.5, visibleSize.height * 0.6));
 	this->addChild(gameOverLabel, 10);
-
-	int highScore = CCUserDefault::sharedUserDefault()->getIntegerForKey("bazookaGameHighScore");
-
+	int highScore = UserDefault::getInstance()->getIntegerForKey("bazookaGameHighScore");
 	if(score > highScore)
     {
-        CCUserDefault::sharedUserDefault()->setIntegerForKey("bazookaGameHighScore", score);
-        CCUserDefault::sharedUserDefault()->flush();
-        
-        CCLabelBMFont* newHighScoreLabel = CCLabelBMFont::create("NEW HIGH SCORE", "PixelFont.fnt");
+        UserDefault::getInstance() -> setIntegerForKey("bazookaGameHighScore", score);
+        UserDefault::getInstance() -> flush();        
+		auto newHighScoreLabel = Label::createWithBMFont("PixelFont.fnt", "NEW HIGH SCORE");
         newHighScoreLabel->setPosition(Vec2(visibleSize.width * 0.5, visibleSize.height * 0.5));
         this->addChild(newHighScoreLabel, 10);
-        newHighScoreLabel->setScale(0.75);
-        
-        CCLabelBMFont* GOscoreLabel = CCLabelBMFont::create("0", "PixelFont.fnt");
+        newHighScoreLabel->setScale(0.75);        
+        auto GOscoreLabel = Label::createWithBMFont("PixelFont.fnt","0");
         GOscoreLabel->setPosition(Vec2(visibleSize.width * 0.5, visibleSize.height * 0.4));
         this->addChild(GOscoreLabel, 10);
-        GOscoreLabel->setScale(0.75);        
-        
+        GOscoreLabel->setScale(0.75); 
         char scoreTxt[100];
         sprintf(scoreTxt, "%d", score);
         GOscoreLabel->setString(scoreTxt);
@@ -303,7 +239,7 @@ void HelloWorld::GameOver()
     }
     else
     {
-        CCLabelBMFont* newHighScoreLabel = CCLabelBMFont::create("BETTER LUCK NEXT TIME", "PixelFont.fnt");
+        auto newHighScoreLabel = Label::createWithBMFont("PixelFont.fnt", "BETTER LUCK NEXT TIME");
         newHighScoreLabel->setPosition(Vec2(visibleSize.width * 0.5, visibleSize.height * 0.5));
         this->addChild(newHighScoreLabel, 10);
         newHighScoreLabel->setScale(0.75);    
@@ -314,44 +250,33 @@ void HelloWorld::GameOver()
 
 void HelloWorld::spawnEnemy(float dt)
 {
-	//CCLog("spawn enemy");
-
-	float mrand = rand() % 3 + 1;
+	float mrand = rand() % 3 + 1;	
 	float h = visibleSize.height * mrand * 0.25;
-
-	Sprite* eSprite = Sprite::create("bookGame_enemy.png");
+	auto eSprite = Sprite::create("bookGame_enemy.png");
 	Vec2 pos = Vec2(visibleSize.width + eSprite->getContentSize().width / 2, h);
-
-	Projectile* e = Projectile::createProjectile("bookGame_enemy.png", pos, Vec2(-2,0),"enemy");
+	auto e = Projectile::createProjectile("bookGame_enemy.png", pos, Vec2(-2,0),"enemy");
 	addChild(e);
 	e->shoot(0.016);
-
 	enemies.push_back(e);
 }
 
 void HelloWorld::shoot(Vec2 position)
 {
-	CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("gunshot.wav");
-
-	Projectile* pr = Projectile::createProjectile("bookGame_bullet.png", position, Vec2(-5, 0), "bullet");
+	SimpleAudioEngine::getInstance()->playEffect("gunshot.wav");
+	auto pr = Projectile::createProjectile("bookGame_bullet.png", position, Vec2(-5, 0), "bullet");
 	addChild(pr);
-
 	bullets.push_back(pr);
 }
 
 
 void HelloWorld::fireRocket()
 {
-	//CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("fireRocket.wav");
 	
 	Vec2 p = hero->getPosition();
-
 	p.x = p.x + hero->getContentSize().width/2;
 	p.y = p.y - hero->getContentSize().height * 0.05;
-
 	Projectile* rocket = Projectile::createProjectile("bookGame_rocket.png",p,Vec2(10,0), "rocket");
 	addChild(rocket);
-
 	rockets.push_back(rocket);
 
 	//CCParticleFire: Point particle system. Uses Gravity mode.
@@ -394,7 +319,7 @@ void HelloWorld::fireRocket()
 	//this->addChild(m_emitter, 0);
 	//m_emitter->setAutoRemoveOnFinish(true);
 
-	smokeParticle = CCParticleSystemQuad::create("smoke.plist");
+	smokeParticle = ParticleSystemQuad::create("smoke.plist");
 	smokeParticle->setPosition(p);
 	this->addChild(smokeParticle);
 }
@@ -423,31 +348,26 @@ void HelloWorld::gameResumed()
 	}	
 }
 
-void HelloWorld::mainMenuScene(CCObject* pSender)
+void HelloWorld::mainMenuScene(Object* pSender)
 {
-	CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("pop.wav");
-	
-	CCScene *mScene = MainMenu::scene();
-	CCDirector::sharedDirector()->replaceScene(mScene);
+	SimpleAudioEngine::getInstance() -> playEffect("pop.wav");	
+	auto mScene = MainMenu::scene();
+	Director::getInstance() -> replaceScene(mScene);
 }
 
 # pragma - mark Touches
 bool HelloWorld::onTouchesBegan(Touch* touch, Event* event)
 {
 
-	CCPoint location = touch->getLocationInView();
-
-	location = CCDirector::sharedDirector()->convertToGL(location);
-
+	Vec2 location = touch->getLocationInView();
+	location = Director::getInstance() -> convertToGL(location);
 
 	if(!gameOver)
 	{
 		
 		if (location.x < visibleSize.width / 2){
-		
 			//Jump
 			thrust.y = 15.0f;
-
 		}
 		else{
 		
@@ -463,10 +383,9 @@ bool HelloWorld::onTouchesBegan(Touch* touch, Event* event)
 void HelloWorld::initHeroAnimation(){
 
 	//player animation       
-	CCSpriteBatchNode* spritebatch = CCSpriteBatchNode::create("player_anim.png");
-	CCSpriteFrameCache* cache = CCSpriteFrameCache::sharedSpriteFrameCache();
+	SpriteBatchNode* spritebatch = SpriteBatchNode::create("player_anim.png");
+	SpriteFrameCache* cache = SpriteFrameCache::sharedSpriteFrameCache();
 	cache->addSpriteFramesWithFile("player_anim.plist");
-
 	hero->createWithSpriteFrameName("player_idle_1.png");
 	hero->addChild(spritebatch);
 
@@ -477,15 +396,13 @@ void HelloWorld::initHeroAnimation(){
 	for (int i = 1; i <= 4; i++)
 	{
 		sprintf(str1, "player_idle_%d.png", i);
-		SpriteFrame* frame = cache->spriteFrameByName(str1);
+		SpriteFrame* frame = cache->getSpriteFrameByName(str1);
 		animFrames.pushBack(frame);
 	}
 
 	Animation* idleanimation = Animation::createWithSpriteFrames(animFrames, 0.25f);
-	mIdleAction = CCRepeatForever::create(CCAnimate::create(idleanimation));
+	mIdleAction = RepeatForever::create(Animate::create(idleanimation));
 	mIdleAction->retain();
-
-
 	animFrames.clear();
 
 	//boost animation
@@ -493,14 +410,13 @@ void HelloWorld::initHeroAnimation(){
 	for (int i = 1; i <= 4; i++)
 	{
 		sprintf(str2, "player_boost_%d.png", i);
-		SpriteFrame* frame = cache->spriteFrameByName(str2);
+		SpriteFrame* frame = cache->getSpriteFrameByName(str2);
 		animFrames.pushBack(frame);
 	}
 
-	CCAnimation* boostanimation = CCAnimation::createWithSpriteFrames(animFrames, 0.25f);
-	hero->runAction(CCRepeatForever::create(CCAnimate::create(boostanimation)));
-
-	mBoostAction = CCRepeatForever::create(CCAnimate::create(boostanimation));
+	Animation* boostanimation = Animation::createWithSpriteFrames(animFrames, 0.25f);
+	hero->runAction(RepeatForever::create(Animate::create(boostanimation)));
+	mBoostAction = RepeatForever::create(Animate::create(boostanimation));
 	mBoostAction->retain();
 }
 
@@ -526,8 +442,6 @@ void HelloWorld::boostAnim()
 
 void HelloWorld::AnimationStates()
 {
-	CCLOG("action state");
-
 	switch (mPlayerState)
 	{
 		case kPLayerStateIdle:

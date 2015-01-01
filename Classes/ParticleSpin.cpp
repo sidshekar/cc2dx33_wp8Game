@@ -1,5 +1,6 @@
 
 #include "ParticleSpin.h"
+USING_NS_CC;
 
 ParticleSpin::ParticleSpin()
 {
@@ -11,7 +12,7 @@ ParticleSpin::~ParticleSpin()
 
 ParticleSpin* ParticleSpin::create(Vec2 _cp, char *fileName)
 {
-    ParticleSpin *pc = new ParticleSpin();
+    auto pc = new ParticleSpin();
     if(pc && pc->initWithFile(fileName))
     {
         pc->setPosition(_cp);
@@ -21,40 +22,29 @@ ParticleSpin* ParticleSpin::create(Vec2 _cp, char *fileName)
 	}
     
     CC_SAFE_DELETE(pc);
-    return NULL;
+    return nullptr;
 }
 
 bool ParticleSpin::init()
 {
  
-    CCSize winSize = CCDirector::sharedDirector()->getWinSize();
-    
-    gravity = ccp(0,-0.25);
-    
+    Size winSize = Director::getInstance()->getWinSize();    
+    gravity = Vec2(0,-0.25);    
     speed.x = CCRANDOM_MINUS1_1() * 2.0f;
-    speed.y = rand()% 3 + 1 ;
-    
-    CCLOG("speed x %f", speed.x);
-    
-
-    
+    speed.y = rand()% 3 + 1 ;    
+    log("speed x %f", speed.x);    
     return true;
 }
 
 
 void ParticleSpin::update(float dt)
 {
-    spinCounter+=dt*4;
-    
-    Vec2 initpos = this->getPosition();
-    
+    spinCounter += dt*4;    
+    Vec2 initpos = this->getPosition();    
     Vec2 finalpos;
     finalpos.x = initpos.x + speed.x;
     speed.y += gravity.y;
-    finalpos.y = initpos.y + speed.y + gravity.y;
-    
-    this->setPosition(finalpos);
-    
-    this->setRotation(CC_RADIANS_TO_DEGREES(spinCounter * speed.x));  
-    
+    finalpos.y = initpos.y + speed.y + gravity.y;    
+    this->setPosition(finalpos);    
+    this->setRotation(CC_RADIANS_TO_DEGREES(spinCounter * speed.x));      
 }

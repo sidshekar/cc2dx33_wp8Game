@@ -1,5 +1,5 @@
-
 #include "ScrollingBg.h"
+USING_NS_CC;
 ScrollingBg* ScrollingBg::create(string _name, float _speed, float _yPos)
 {
     ScrollingBg* ob = new ScrollingBg();
@@ -10,18 +10,14 @@ ScrollingBg* ScrollingBg::create(string _name, float _speed, float _yPos)
     }
     
     CC_SAFE_DELETE(ob);
-    return NULL;
+    return nullptr;
     
 }
 
 bool ScrollingBg::initScrollingBg(string _name, float _speed, float _yPos)
 {
-	winSize = CCDirector::getInstance()->getWinSize();
-
-	//CCLog("[ScrollingBG] winsizeX: %f, winSizeY: %f", winSize.width, winSize.height);
-    
-    speed = _speed;
-    
+	winSize = Director::getInstance()->getWinSize(); 
+    speed = _speed;    
     gameBg1 = Sprite::create(_name.c_str()); 
 	gameBg1->setPosition(Vec2(winSize.width * 0.5f, _yPos));
     gameBg1->setAnchorPoint(Vec2(0.5,0.0));

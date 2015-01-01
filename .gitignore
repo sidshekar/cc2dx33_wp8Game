@@ -1,1 +1,5 @@
 cocos2d/
+proj.win32/*.sdf
+proj.win32/*.opensdf
+proj.win32/Debug.win32/
+proj.win32/wp8Game.v11.suo

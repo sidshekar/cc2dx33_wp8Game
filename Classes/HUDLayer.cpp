@@ -2,19 +2,20 @@
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
 
-
+USING_NS_CC;
+using namespace CocosDenshion;
 HUDLayer::HUDLayer()
 {
-	visibleSize = CCDirector::sharedDirector()->getVisibleSize();  
+	visibleSize = Director::getInstance()->getVisibleSize();  
 	
 	//moved the score label to the center
-	scoreLabel = CCLabelBMFont::create("Score: 0", "PixelFont.fnt");
+	scoreLabel = Label::createWithBMFont("PixelFont.fnt", "Score: 0");
 	scoreLabel->setPosition(Vec2(visibleSize.width * 0.50, visibleSize.height * 0.9));
 	this->addChild(scoreLabel, 10);
     scoreLabel->setScale(0.5);
 
 
-	CCMenuItemImage*pauseItem = CCMenuItemImage::create("_bookgame_UI__pause.png",
+	MenuItemImage*pauseItem = MenuItemImage::create("_bookgame_UI__pause.png",
 														 "_bookgame_UI__pause.png", this,
 														 menu_selector(HUDLayer::pauseGame));
     
@@ -22,7 +23,7 @@ HUDLayer::HUDLayer()
 								visibleSize.height- pauseItem->getContentSize().height/2));
 	
 	
-	pauseMenu = CCMenu::create(pauseItem, NULL);
+	pauseMenu = Menu::create(pauseItem, nullptr);
 	pauseMenu->setPosition(Vec2::ZERO);
 	this->addChild(pauseMenu);
 
@@ -33,41 +34,35 @@ HUDLayer::~HUDLayer(void)
 
 }
 
-void HUDLayer::pauseGame(CCObject* pSender)
+void HUDLayer::pauseGame(Object* pSender)
 {
-	CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("pop.wav");
+	SimpleAudioEngine::getInstance()->playEffect("pop.wav");
 	
-	HelloWorld* helloWorld = (HelloWorld*)this->getParent();
+	HelloWorld* helloWorld = dynamic_cast<HelloWorld*> (this->getParent());
 
 	if(!helloWorld->gameOver)
 	{
 		pauseMenu->setTouchEnabled(false);
 
-		CCMenuItemImage* resumeItem = CCMenuItemImage::create("_bookgame_UI__resume.png",
+		MenuItemImage* resumeItem = MenuItemImage::create("_bookgame_UI__resume.png",
 														  "_bookgame_UI__resume.png", this,
 														  menu_selector(HUDLayer::resumeGame));
     
-		resumeItem->setPosition(Vec2(visibleSize.width * 0.5, visibleSize.height* 0.5));
-	
-	
-		resumeMenu = CCMenu::create(resumeItem, NULL);
+		resumeItem->setPosition(Vec2(visibleSize.width * 0.5, visibleSize.height* 0.5));	
+		resumeMenu = Menu::create(resumeItem, NULL);
 		resumeMenu->setPosition(Vec2::ZERO);
 		this->addChild(resumeMenu);	
-
 		helloWorld->gamePaused();
 	}
 }
 
-void HUDLayer::resumeGame(CCObject* pSender)
+void HUDLayer::resumeGame(Object* pSender)
 {
-	CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("pop.wav");
-	
+	SimpleAudioEngine::getInstance()->playEffect("pop.wav");	
 	pauseMenu->setTouchEnabled(true);
 	this->removeChild(resumeMenu);
-
 	HelloWorld* helloWorld = (HelloWorld*)this->getParent();
 	helloWorld->gameResumed();
-
 }
 
 void HUDLayer::updateScore(int score)

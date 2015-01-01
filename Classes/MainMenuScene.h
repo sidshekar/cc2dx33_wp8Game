@@ -4,8 +4,6 @@
 #include "cocos2d.h"
 #include "ScrollingBgLayer.h"
 
-using namespace cocos2d;
-
 class MainMenu : public cocos2d::Layer
 {
 public:
